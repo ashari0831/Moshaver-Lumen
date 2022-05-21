@@ -69,4 +69,14 @@ class AdvisorController extends Controller
         return response()->json(auth()->user()->advisor, 200);
     }
 
+    public function doc_info_for_admin(){
+        $docs = Advisor_document::all();
+
+        $docs_info = [];
+        foreach( $docs as $doc ){
+            array_push($docs_info, [$doc, $doc->advisor->user]);
+        }
+
+        return response()->json($docs_info);
+    }
 }

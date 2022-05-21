@@ -66,6 +66,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->get('/comments', 'RateController@index');
             $router->patch('/comments/{comment}', 'RateController@update');
             $router->delete('/comments/{comment}', 'RateController@destroy');
+            $router->get('/advisor-documents', 'AdvisorController@doc_info_for_admin');
 
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
