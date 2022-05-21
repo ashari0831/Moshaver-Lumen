@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Models\{Advisor, Request};
+use App\Models\{Advisor, Request, Reservation};
 use Laravel\Scout\Searchable;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
@@ -94,6 +94,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // Customize array...
         return $array;
         // return array_merge($array, $related);
+    }
+
+    /**
+     * Get all of the reservations for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'advisor_user_id');
     }
 
     // protected static function boot()

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Advisor, Advisor_document};
+use App\Models\{Advisor, Advisor_document, User};
 use Illuminate\Support\Facades\File;
 
 
@@ -69,6 +69,18 @@ class AdvisorController extends Controller
         return response()->json(auth()->user()->advisor, 200);
     }
 
+    public function update_adv($user){
+        $this->validate(request(), [
+            'meli_code' => 'unique:advisors',
+        ]);
+
+        $result = User::find($user)->advisor->update(request()->all());
+        if(!($result)){
+            return response()->json("update failed!", 400);
+        }
+        return response()->json(auth()->user()->advisor, 200);
+    }
+
     public function doc_info_for_admin(){
         $docs = Advisor_document::all();
 
@@ -78,5 +90,14 @@ class AdvisorController extends Controller
         }
 
         return response()->json($docs_info);
+    }
+
+    public function advisor_resume_info($advisor){
+        
+        return response()->json([
+            Advisor::find($advisor)->user, 
+            Advisor::find($advisor),
+            Advisor::find($advisor)->resumes,
+        ]);
     }
 }

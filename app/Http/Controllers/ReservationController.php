@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Chat, Chat_user, Reservation};
+use App\Models\{Chat, Chat_user, Reservation, User};
 use Illuminate\Support\Facades\Str;
 use Carbon\Carbon;
 
@@ -38,5 +38,34 @@ class ReservationController extends Controller
         ]);
 
         return response()->json([$res]);
+    }
+
+    public function index(){
+        $reservations = auth()->user()->reservations;
+        $res_user = [];
+        foreach ( $reservations as $res ) {
+            array_push($res_user, [$res->user, $res]);
+        }
+        return response()->json($res_user);
+    }
+
+    public function show($advisor_user_id){
+        $reservations = User::find($advisor_user_id)->reservations;
+        $res_user = [];
+        foreach ( $reservations as $res ) {
+            array_push($res_user, [$res->user, $res]);
+        }
+        return response()->json($res_user);
+    }
+
+    public function destroy($reservation){
+        try{
+            $res = Reservation::find($reservation);
+            Chat_user::where('chat_id', $res->chat_id)->delete();
+            Chat::where('chat_id', $res->chat_id)->delete();
+            $res->delete();
+        }catch(Exception $e){
+            return response()->json(['چنین رزروی وجود ندارد']);
+        }
     }
 }

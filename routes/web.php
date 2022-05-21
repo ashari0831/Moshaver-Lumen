@@ -61,12 +61,18 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
         ]);
         $router->get('/advisor-docs/{advisor}', 'AdvisorDocumentController@show');
         $router->post('/reserve', 'ReservationController@store');
+        $router->get('/reservation-details', 'ReservationController@index');
 
         $router->group(['prefix'=>'/admin'], function () use ($router){
             $router->get('/comments', 'RateController@index');
             $router->patch('/comments/{comment}', 'RateController@update');
             $router->delete('/comments/{comment}', 'RateController@destroy');
             $router->get('/advisor-documents', 'AdvisorController@doc_info_for_admin');
+            $router->get('/statistical-report', 'StatisticalController@get_statistical_data');
+            $router->patch('/advisor-profile/{user}', 'AdvisorController@update_adv');
+            $router->get('/advisor-profile/{advisor}', 'AdvisorController@advisor_resume_info');
+            $router->get('/reservation-details/{advisor_user_id}', 'ReservationController@show');
+            $router->delete('/reservation/{reservation}', 'ReservationController@destroy');
 
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
