@@ -27,6 +27,6 @@ class EnsureUserIdIsNotRepetitious
 
         // Post-Middleware Action
 
-        return response()->json($response, 403);;
+        return response()->json([$response], 403);
     }
 }

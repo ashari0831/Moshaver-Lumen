@@ -69,6 +69,8 @@ $app->configure('scout');
 
 $app->configure('mail');
 
+// $app->configure('broadcasting');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +91,7 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'notRepetitiousAdvisor' => App\Http\Middleware\EnsureUserIdIsNotRepetitious::class,
     'verified' => App\Http\Middleware\EnsureEmailIsVerified::class,
+    'notCreatedJobtime' => App\Http\Middleware\EnsureJobtimeIsNotCreated::class,
 ]);
 
 /*
@@ -102,15 +105,16 @@ $app->routeMiddleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+// $app->register(App\Providers\BroadcastServiceProvider::class);
+// $app->register(Illuminate\Broadcasting\BroadcastServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Laravel\Scout\ScoutServiceProvider::class);
 $app->register(Illuminate\Notifications\NotificationServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
-// $app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
 $app->alias('mail.manager', Illuminate\Mail\MailManager::class);
 $app->alias('mail.manager', Illuminate\Contracts\Mail\Factory::class);
 

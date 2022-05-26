@@ -15,6 +15,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\ExampleEvent::class => [
             \App\Listeners\ExampleListener::class,
         ],
+        'App/Events/MessageSent' => [
+            'App/Listeners/SendChatMessageNotification'
+        ]
     ];
 
     /**

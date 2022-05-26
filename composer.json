@@ -12,6 +12,7 @@
         "laravel/lumen-framework": "^9.0",
         "laravel/scout": "^9.4",
         "league/flysystem": "^3.0",
+        "pusher/pusher-php-server": "^7.0",
         "symfony/var-dumper": "^6.0",
         "tymon/jwt-auth": "*",
         "yab/laravel-scout-mysql-driver": "^5.1"

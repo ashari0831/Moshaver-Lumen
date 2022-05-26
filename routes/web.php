@@ -62,6 +62,15 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
         $router->get('/advisor-docs/{advisor}', 'AdvisorDocumentController@show');
         $router->post('/reserve', 'ReservationController@store');
         $router->get('/reservation-details', 'ReservationController@index');
+        $router->post('/advisor-jobtime', [
+            'middleware' => 'notCreatedJobtime',
+            'uses' => 'AdvisorDailyTimeController@store'
+        ]);
+        $router->patch('/advisor-jobtime', 'AdvisorDailyTimeController@update');
+        $router->get('/advisor-jobtime', 'AdvisorDailyTimeController@show');
+        $router->get('/chat', 'ChatController@chatrooms');
+        $router->get('/chat/{chat_id}/messages', 'ChatController@fetchMessages');
+        $router->post('/chat/{chat_id}/messages', 'ChatController@sendMessage');
 
         $router->group(['prefix'=>'/admin'], function () use ($router){
             $router->get('/comments', 'RateController@index');
@@ -73,6 +82,8 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->get('/advisor-profile/{advisor}', 'AdvisorController@advisor_resume_info');
             $router->get('/reservation-details/{advisor_user_id}', 'ReservationController@show');
             $router->delete('/reservation/{reservation}', 'ReservationController@destroy');
+            $router->get('/advisor-jobtime/{advisor}', 'AdvisorDailyTimeController@admin_show');
+            $router->patch('/advisor-jobtime/{advisor}', 'AdvisorDailyTimeController@admin_update');
 
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
