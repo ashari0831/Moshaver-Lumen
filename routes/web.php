@@ -84,7 +84,15 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->delete('/reservation/{reservation}', 'ReservationController@destroy');
             $router->get('/advisor-jobtime/{advisor}', 'AdvisorDailyTimeController@admin_show');
             $router->patch('/advisor-jobtime/{advisor}', 'AdvisorDailyTimeController@admin_update');
-
+            $router->get('/reservations', 'ReservationController@admin_reseve_details');
+            $router->get('/chats/{advisor_user}', 'ChatController@particular_advisor_chats');
+            $router->post('/create-user', 'UserController@store');
+            $router->delete('/delete-user', 'UserController@destroy');
+            $router->get('/user-profile/{user}', 'UserController@show');
+            $router->get('/list-users', 'UserController@index');
+            $router->get('/advisor-comments/{advisor}', 'RateController@paticular_advisor_rates');
+            $router->get('/list-users-comments', 'RateController@list_users_comments');
+            $router->delete('/delete-advisor/{user}', 'AdvisorController@destroy');
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
     });

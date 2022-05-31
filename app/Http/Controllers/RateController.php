@@ -42,8 +42,16 @@ class RateController extends Controller
 
     public function update($comment){
         // request()->input('name', 'SAlly'); //default val
-       
-        return response()->json(Rate::find($comment)->update(request()->all()));
+        $validated = $this->validate(request(), [
+            'text' => 'string',
+            'is_confirmed' => 'boolean'
+        ]);
+        if(Rate::find($comment)->update($validated)){
+            return response()->json(Rate::find($comment), 200);
+        } else {
+            return response()->json("update failed", 400);
+        }
+        
     }
 
     public function destroy($comment){
@@ -54,5 +62,25 @@ class RateController extends Controller
         $req_arr = request()->all();
         $req_arr['user_id'] = auth()->user()->id;
         return response()->json(Rate::create($req_arr));
+    }
+
+    public function paticular_advisor_rates($advisor){
+        return response()->json(Rate::where('advisor_id', $advisor)->with('user')->get());
+    }
+
+    public function list_users_comments(){
+        $rates = Rate::all();
+        $result = [];
+        foreach ($rates as $rate){
+            $num_of_rates_each_advisor = Rate::where('advisor_id', $rate->advisor_id)->count();
+            array_push($result, [
+                'user_id' => $rate->advisor->user->id,
+                'advisor_id' => $rate->advisor_id,
+                'first_name' => $rate->advisor->user->first_name,
+                'last_name' => $rate->advisor->user->last_name,
+                'num_of_comments' => $num_of_rates_each_advisor
+            ]);
+        }
+        return response()->json($result, 200);
     }
 }

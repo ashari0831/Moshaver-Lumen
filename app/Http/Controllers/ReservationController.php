@@ -64,8 +64,41 @@ class ReservationController extends Controller
             Chat_user::where('chat_id', $res->chat_id)->delete();
             Chat::where('chat_id', $res->chat_id)->delete();
             $res->delete();
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['چنین رزروی وجود ندارد']);
         }
+    }
+
+    public function admin_reseve_details(){
+        $reservations = Reservation::all();
+
+        $result = [];
+        foreach ($reservations as $res){
+            // $advisor =  User::where('users.id', $res->advisor_user_id)->join('advisors', 'advisors.user_id', '=', 'users.id')->get();
+            $advisor =  $res->advisor;
+            $user = $res->user;
+            $now = Carbon::now();
+            if ($now >= $res->reservation_datetime && $now <= $res->end_session_datetime){
+                $session_stat = "در حال انجام";
+            } elseif($now < $res->reservation_datetime) {
+                $session_stat = "رزرو شده";
+            } elseif($now > $res->end_session_datetime) {
+                $session_stat = "به اتمام رسیده";
+            }
+
+            array_push($result, [
+                "advisor_id"=> $advisor->id,
+                "advisor_image"=> $advisor->image,
+                "advisor_first_name"=> $advisor->first_name,
+                "advisor_last_name"=> $advisor->last_name,
+                "user_id"=> $user->id,
+                "user_image"=> $user->image,
+                "user_first_name"=> $user->first_name,
+                "user_last_name"=> $user->last_name,
+                "reserve_date"=> $res->created_at->toDateString(),
+                "session_status"=> $session_stat
+            ]);
+        }
+        return response()->json($result);
     }
 }

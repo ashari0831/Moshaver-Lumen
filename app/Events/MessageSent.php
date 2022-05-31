@@ -27,6 +27,7 @@ class MessageSent extends Event implements ShouldBroadcast
 
 
     public function broadcastOn(){
-        return new PrivateChannel('chat.' . $this->chatMessage->chat_id);
+        return ['chat.' . $this->chatMessage->chat_id];
+        // return new PrivateChannel('chat.' . $this->chatMessage->chat_id);
     }
 }

@@ -18,4 +18,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function advisor(){
+        return $this->belongsTo(User::class, 'advisor_user_id');
+    }
 }

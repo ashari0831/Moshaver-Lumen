@@ -100,4 +100,15 @@ class AdvisorController extends Controller
             Advisor::find($advisor)->resumes,
         ]);
     }
+
+    public function destroy($user){
+        if(User::find($user)->exists()){
+            $user = User::find($user);
+            $user->advisor->delete();
+            $user->delete();
+            return response()->json(["مشاور حذف شد"], 204);
+        }
+
+        return response()->json(["چنین مشاوری وجود ندارد"], 400);
+    }
 }
