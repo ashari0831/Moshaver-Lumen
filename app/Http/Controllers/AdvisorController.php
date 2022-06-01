@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Advisor, Advisor_document, User};
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 
@@ -13,7 +14,7 @@ class AdvisorController extends Controller
     protected $guarded = [];
     //
     public function show(){
-        return response()->json(auth()->user()->advisor);
+        return response()->json(User::where('id', auth()->user()->id)->with('advisor')->get());
     }
 
     public function store(Request $req){
@@ -93,11 +94,11 @@ class AdvisorController extends Controller
     }
 
     public function advisor_resume_info($advisor){
-        
+        $adv = Advisor::find($advisor);
         return response()->json([
-            Advisor::find($advisor)->user, 
-            Advisor::find($advisor),
-            Advisor::find($advisor)->resumes,
+            $adv->user, 
+            $adv,
+            $adv->resumes,
         ]);
     }
 
@@ -110,5 +111,49 @@ class AdvisorController extends Controller
         }
 
         return response()->json(["چنین مشاوری وجود ندارد"], 400);
+    }
+
+    public function list_advisors_for_admin(){
+        $result = Advisor::join('rates','rates.advisor_id', '=', 'advisors.id')
+                    ->join('users', 'users.id', '=', 'advisors.user_id')
+                    ->select('advisor_id', 'advisors.user_id', \DB::raw("avg(rate) as rate"), 'first_name', 'last_name', 'advisors.created_at')
+                    ->groupBy('advisor_id')->get();
+        return response()->json($result);
+    }
+
+    public function admin_creates_advisor(){
+        $validated = $this->validate(request(), [
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'phone_number' => 'required|string|unique:users',
+            'gender' => 'required|string',
+            'year_born' => 'required|string',
+            'is_advisor' => 'required|boolean',
+            'is_mental_advisor' => 'required|boolean',
+            'is_family_advisor' => 'required|boolean',
+            'is_sport_advisor' => 'required|boolean',
+            'is_healthcare_advisor' => 'required|boolean',
+            'is_education_advisor' => 'required|boolean',
+            'meli_code' => 'required|string',
+            'advise_method' => 'required|string',
+            'address' => 'required|string',
+            'telephone' => 'required|string',
+        ]);
+
+        if($validated['is_advisor']){
+            $user = User::create($validated);
+            $validated['user_id'] = $user->id;
+            $advisor = Advisor::create($validated);
+        } else {
+            $user = User::create($validated);
+        }
+
+        return response()->json([$user, $advisor], 201);
+    }
+
+    public function admin_show_advisor_profile($advisor){
+        return response()->json(Advisor::where('id', $advisor)->with('user')->get());
     }
 }

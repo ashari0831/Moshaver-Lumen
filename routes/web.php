@@ -72,7 +72,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
         $router->get('/chat/{chat_id}/messages', 'ChatController@fetchMessages');
         $router->post('/chat/{chat_id}/messages', 'ChatController@sendMessage');
 
-        $router->group(['prefix'=>'/admin'], function () use ($router){
+        $router->group(['prefix' => '/admin', 'middleware' => ['isAdmin']], function () use ($router){
             $router->get('/comments', 'RateController@index');
             $router->patch('/comments/{comment}', 'RateController@update');
             $router->delete('/comments/{comment}', 'RateController@destroy');
@@ -93,6 +93,9 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->get('/advisor-comments/{advisor}', 'RateController@paticular_advisor_rates');
             $router->get('/list-users-comments', 'RateController@list_users_comments');
             $router->delete('/delete-advisor/{user}', 'AdvisorController@destroy');
+            $router->get('/list-advisors', 'AdvisorController@list_advisors_for_admin');
+            $router->post('/create-advisor', 'AdvisorController@admin_creates_advisor');
+            $router->get('/advisor-profile', 'AdvisorController@admin_show_advisor_profile');
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
     });
