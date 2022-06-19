@@ -30,7 +30,7 @@ class AdvisorController extends Controller
             'telephone' => 'required',
         ]);
         
-        
+        auth()->user()->update(['is_advisor' => true]);
         Advisor::create([
             'user_id'=> auth()->user()->id,
             'is_mental_advisor'=> $validated_data['is_mental_advisor'],
@@ -43,7 +43,7 @@ class AdvisorController extends Controller
             'address'=> $validated_data['address'],
             'telephone'=> $validated_data['telephone'],
         ]);
-        return response()->json("Advisor has been created successfully!");
+        return response()->json(["Advisor has been created successfully!"], 201);
     }
 
     public function index(){
@@ -143,6 +143,8 @@ class AdvisorController extends Controller
         ]);
 
         if($validated['is_advisor']){
+            $password = $validated['password'];
+            $validated['password'] = app('hash')->make($password);
             $user = User::create($validated);
             $validated['user_id'] = $user->id;
             $advisor = Advisor::create($validated);

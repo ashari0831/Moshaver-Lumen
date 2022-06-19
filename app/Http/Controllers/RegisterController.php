@@ -19,11 +19,11 @@ class RegisterController extends Controller
         
 
         if(empty($email) or empty($password) or empty($first_name) or empty($last_name) or empty($gender) or empty($phone_number)){
-            return response()->json(['status'=>'error', 'message'=>'fill all the fields.']);
+            return response()->json(['status'=>'error', 'message'=>'fill all the fields.'], 400);
         }
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            return response()->json(['status'=>'error', 'message'=>'enter a valid email.']);
+            return response()->json(['status'=>'error', 'message'=>'enter a valid email.'], 400);
         }
 
         // if(strlen($password) < 6){
@@ -31,10 +31,10 @@ class RegisterController extends Controller
         // }
 
         if (User::where('email', '=', $email)->exists()){
-            return response()->json(['status'=>'error', 'message'=>'use another email.']);
+            return response()->json(['status'=>'error', 'message'=>'use another email.'], 400);
         }
         if (User::where('phone_number', '=', $phone_number)->exists()){
-            return response()->json(['status'=>'error', 'message'=>'use another phone_number.']);
+            return response()->json(['status'=>'error', 'message'=>'use another phone_number.'], 400);
         }
 
         try {
@@ -52,7 +52,7 @@ class RegisterController extends Controller
             }
 
         } catch (\Exception $e) {
-            return response()->json(['status'=>'error', 'message'=> $e->getMessage()]);
+            return response()->json(['status'=>'error', 'message'=> $e->getMessage()], 400);
         }
     }
 }

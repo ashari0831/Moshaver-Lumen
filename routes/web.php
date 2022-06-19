@@ -32,7 +32,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
     ]);
 
 
-    $router->group(['middleware' => ['auth', 'verified']], function () use ($router){
+    $router->group(['middleware' => ['auth']], function () use ($router){   //middleware=>varified
         $router->get('/user-profile', 'AuthController@me');
         $router->patch('/user-profile', 'AuthController@update');
         $router->post('/refresh-token', 'AuthController@refresh');
@@ -95,7 +95,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->delete('/delete-advisor/{user}', 'AdvisorController@destroy');
             $router->get('/list-advisors', 'AdvisorController@list_advisors_for_admin');
             $router->post('/create-advisor', 'AdvisorController@admin_creates_advisor');
-            $router->get('/advisor-profile', 'AdvisorController@admin_show_advisor_profile');
+            $router->get('/advisor-profile/{advisor}', 'AdvisorController@admin_show_advisor_profile');
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
     });

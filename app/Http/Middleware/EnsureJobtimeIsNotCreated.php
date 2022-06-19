@@ -21,7 +21,7 @@ class EnsureJobtimeIsNotCreated
         if(Advisor_daily_time::where('advisor_id', auth()->user()->advisor->id)->exists()){
             $response = "برای این مشاور رکورد تایم کاری موجود هست. از همین اندپوینت با متد پوت یا پچ استفاده شود";
         } else {
-            $response = $next($request);
+            return $next($request);
         }
         
 

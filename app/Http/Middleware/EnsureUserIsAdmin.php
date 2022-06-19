@@ -17,7 +17,7 @@ class EnsureUserIsAdmin
     {
         // Pre-Middleware Action
         if(auth()->user()->is_staff){
-            $response = $next($request);
+            return $next($request);
         } else {
             $response = "تنها ادمین به این اندبونت دسترسی دارد";
         }
