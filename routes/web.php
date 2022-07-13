@@ -23,7 +23,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
     $router->post('/resetpassword', ['as' => 'password.reset', 'uses' => 'AuthController@generateResetToken']);
     $router->put('/resetpassword', 'AuthController@resetPassword');
     $router->post('/upload-doc-file/{advisor}', 'AdvisorDocumentController@store');
-    $router->post('/delete-doc-file/{advisor}', 'AdvisorDocumentController@destroy');
+    $router->post('/delete-doc-file/{file}', 'AdvisorDocumentController@destroy');
     $router->get('/download-doc-file/{file}', 'AdvisorDocumentController@download');
     $router->patch('/doc-file-status', 'AdvisorDocumentController@update');
     $router->post('/email/verify', [

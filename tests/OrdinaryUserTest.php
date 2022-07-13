@@ -77,4 +77,6 @@ class OrdinaryUserTest extends TestCase
 
         $res->assertResponseStatus(201);
     }
+
+    
 }
