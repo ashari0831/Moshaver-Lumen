@@ -92,6 +92,7 @@ $app->routeMiddleware([
     'notRepetitiousAdvisor' => App\Http\Middleware\EnsureUserIdIsNotRepetitious::class,
     'verified' => App\Http\Middleware\EnsureEmailIsVerified::class,
     'notCreatedJobtime' => App\Http\Middleware\EnsureJobtimeIsNotCreated::class,
+    'isAdmin' => App\Http\Middleware\EnsureUserIsAdmin::class,
 ]);
 
 /*

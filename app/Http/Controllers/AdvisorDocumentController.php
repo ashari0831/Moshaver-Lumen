@@ -19,8 +19,12 @@ class AdvisorDocumentController extends Controller
         return response()->download(storage_path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . $file_path ));
     }
 
-    public function store($file){
-        if(request()->hasFile('doc_file')){
+    public function store($advisor){
+        
+        $this->validate(request(), [
+            'doc_file' => 'bail|required|image'
+        ]);
+
             $picName = request()->file('doc_file')->getClientOriginalName();
             $picName = uniqid() . '_' . $picName;
             $filePath = request()->doc_file->storeAs('uploads' . DIRECTORY_SEPARATOR . 'documents', $picName); 
@@ -32,8 +36,8 @@ class AdvisorDocumentController extends Controller
                 'advisor_id' => $advisor,
                 'doc_file' => $filePath
             ]);
-            return response()->json("true");
-        }
+            return response()->json(['true'], 201);
+        
         return response()->json("failed", 400);
     }
 

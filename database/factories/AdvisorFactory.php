@@ -12,7 +12,16 @@ class AdvisorFactory extends Factory
     public function definition(): array
     {
     	return [
-    	    //
-    	];
+    	    'is_mental_advisor' => true,
+            'is_family_advisor' => false,
+            'is_sport_advisor' => false,
+            'is_healthcare_advisor' => false,
+            'is_education_advisor' => true,
+            'meli_code' => strval($this->faker->unique()->randomNumber($nbDigits = 9, $strict = true)),
+            'advise_method' => 'on',
+            'address' => 'required',
+            'telephone' => 'required',
+            // 'user_id' => $this->user_id,
+        ];
     }
 }

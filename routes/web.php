@@ -23,7 +23,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
     $router->post('/resetpassword', ['as' => 'password.reset', 'uses' => 'AuthController@generateResetToken']);
     $router->put('/resetpassword', 'AuthController@resetPassword');
     $router->post('/upload-doc-file/{advisor}', 'AdvisorDocumentController@store');
-    $router->post('/delete-doc-file/{advisor}', 'AdvisorDocumentController@destroy');
+    $router->post('/delete-doc-file/{file}', 'AdvisorDocumentController@destroy');
     $router->get('/download-doc-file/{file}', 'AdvisorDocumentController@download');
     $router->patch('/doc-file-status', 'AdvisorDocumentController@update');
     $router->post('/email/verify', [
@@ -32,7 +32,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
     ]);
 
 
-    $router->group(['middleware' => ['auth', 'verified']], function () use ($router){
+    $router->group(['middleware' => ['auth']], function () use ($router){   //middleware=>varified
         $router->get('/user-profile', 'AuthController@me');
         $router->patch('/user-profile', 'AuthController@update');
         $router->post('/refresh-token', 'AuthController@refresh');
@@ -72,7 +72,7 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
         $router->get('/chat/{chat_id}/messages', 'ChatController@fetchMessages');
         $router->post('/chat/{chat_id}/messages', 'ChatController@sendMessage');
 
-        $router->group(['prefix'=>'/admin'], function () use ($router){
+        $router->group(['prefix' => '/admin', 'middleware' => ['isAdmin']], function () use ($router){
             $router->get('/comments', 'RateController@index');
             $router->patch('/comments/{comment}', 'RateController@update');
             $router->delete('/comments/{comment}', 'RateController@destroy');
@@ -93,6 +93,9 @@ $router->group(['prefix'=>'api/v1'], function () use ($router){
             $router->get('/advisor-comments/{advisor}', 'RateController@paticular_advisor_rates');
             $router->get('/list-users-comments', 'RateController@list_users_comments');
             $router->delete('/delete-advisor/{user}', 'AdvisorController@destroy');
+            $router->get('/list-advisors', 'AdvisorController@list_advisors_for_admin');
+            $router->post('/create-advisor', 'AdvisorController@admin_creates_advisor');
+            $router->get('/advisor-profile/{advisor}', 'AdvisorController@admin_show_advisor_profile');
             // $router->get('/list-unconfirmed-comments', 'RateController@unconfirmed_comments_for_admin');
         });
     });
