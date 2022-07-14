@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\{User, Request, Rate, Advisor_history, Advisor_document};
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Advisor extends Model
 {
+    use HasFactory;
+    
     protected $guarded = [];
 
     public function user()

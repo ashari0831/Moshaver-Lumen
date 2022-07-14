@@ -3,10 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\Advisor_daily_time;
 
-
-class EnsureJobtimeIsNotCreated
+class EnsureUserIsAdmin
 {
     /**
      * Handle an incoming request.
@@ -18,14 +16,12 @@ class EnsureJobtimeIsNotCreated
     public function handle($request, Closure $next)
     {
         // Pre-Middleware Action
-        if(Advisor_daily_time::where('advisor_id', auth()->user()->advisor->id)->exists()){
-            $response = "برای این مشاور رکورد تایم کاری موجود هست. از همین اندپوینت با متد پوت یا پچ استفاده شود";
-        } else {
+        if(auth()->user()->is_staff){
             return $next($request);
+        } else {
+            $response = "تنها ادمین به این اندبونت دسترسی دارد";
         }
-        
 
-        // Post-Middleware Action
 
         return response()->json([$response], 403);
     }

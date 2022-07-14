@@ -18,7 +18,7 @@ class EnsureUserIdIsNotRepetitious
     {
         $advisor = Advisor::where('user_id', auth()->user()->id)->exists();
         if(!($advisor)){
-            $response = $next($request);
+            return $next($request);
         } else {
             $response = "You are an advisor already! cannot make another one.";
         }
