@@ -1,5 +1,15 @@
 # Lumen PHP Framework
 
+## Installation
+### step 1:
+run (terminal): 
+``` composer install ```
+### step 2:
+run (termianl):
+``` php artisan jwt:secret ```
+### step 3:
+complete your .env file like .env.example file for sending email and connecting to pusher
+
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
 [![Latest Stable Version](https://img.shields.io/packagist/v/laravel/lumen-framework)](https://packagist.org/packages/laravel/lumen-framework)
