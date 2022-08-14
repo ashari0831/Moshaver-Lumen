@@ -33,13 +33,13 @@ class BeingAdminTest extends TestCase
         
     }
 
-    public function test_admin_can_list_users()
-    {
-        $admin_user = User::find(1);
-        $this->actingAs($admin_user, 'api');
-        $res = $this->json('GET', '/api/v1/admin/list-users');
-        $res->assertResponseStatus(200);
+    // public function test_admin_can_list_users()
+    // {
+    //     $admin_user = User::find(1);
+    //     $this->actingAs($admin_user, 'api');
+    //     $res = $this->json('GET', '/api/v1/admin/list-users');
+    //     $res->assertResponseStatus(200);
 
-    }
+    // }
 
 }
