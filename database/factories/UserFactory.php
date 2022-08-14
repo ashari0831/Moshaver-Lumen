@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'phone_number' => $this->faker->phoneNumber,
             'password' => '$2y$10$msDPndIziyH78/dqkOn6U.ffLgIc38MLKhV6RffvV2m4Lpbtcr6am',
             'email' => $this->faker->unique()->safeEmail,
-            
+            // 'is_staff' => true
         ];
     }
 }
