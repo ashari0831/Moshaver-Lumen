@@ -1,4 +1,4 @@
-# Lumen PHP Framework
+
 ## API endpoints are available online. use postman, etc to request.
 ### base url:
 ''' https://moshaver.herokuapp.com/api/v1/ '''
